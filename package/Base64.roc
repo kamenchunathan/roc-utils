@@ -146,7 +146,7 @@ decode = \str ->
                 padding_count = List.count_if(chunk4, \c -> c == '=')
                 chunk4
                 |> List.map_try(\c -> Dict.get(reverse_base64_index_map, c))
-                |> Result.map(
+                |> Result.map_ok(
                     \l ->
                         when l is
                             [six1, six2, six3, six4] ->

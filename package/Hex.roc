@@ -11,7 +11,7 @@ byte_to_hex = \byte ->
         |> List.get(Num.to_u64(hi))
         |> Result.try(
             \h ->
-                List.get(hex_chars, Num.to_u64(lo)) |> Result.map(\l -> Str.concat(h, l)),
+                List.get(hex_chars, Num.to_u64(lo)) |> Result.map_ok(\l -> Str.concat(h, l)),
         )
     when result is
         Ok(hex) -> hex
@@ -70,11 +70,11 @@ expect
 hex_to_byte : { lo : U8, hi : U8 } -> Result U8 [InvalidHexChar]
 hex_to_byte = \{ lo, hi } ->
     hex_to_nibble(hi)
-    |> Result.map(\v -> Num.shift_left_by(v, 4))
+    |> Result.map_ok(\v -> Num.shift_left_by(v, 4))
     |> Result.try(
         \hi2 ->
             hex_to_nibble(lo)
-            |> Result.map(\lo2 -> Num.bitwise_or(hi2, lo2)),
+            |> Result.map_ok(\lo2 -> Num.bitwise_or(hi2, lo2)),
     )
 
 expect
